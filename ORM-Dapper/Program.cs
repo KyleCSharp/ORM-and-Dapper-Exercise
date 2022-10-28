@@ -45,10 +45,15 @@ namespace ORM_Dapper
             
 
             var userRepose_X = Console.ReadLine();
-            if (userRepose_X.ToLower()== "yes")
+            if (userRepose_X.ToLower() == "yes")
             {
+                Console.WriteLine("what department do you want to delete ID ONLY");
+                int IdUserR = int.Parse(Console.ReadLine());
+                repo.DeleteDepartment(IdUserR);
+                Print(repo.GetAllDepartments());
 
             }
+            else Console.WriteLine("Have a good day");
             Console.WriteLine("Have a great day ");
             
         }

@@ -20,10 +20,10 @@ namespace ORM_Dapper
 
         }
 
-        public void DeleteDepartment(string DeleteDepartmentName)
+        public void DeleteDepartment(int ID)
         {
-            _connection.Execute("DELETE DEPARTMENTS(Name) VALUES(@depatmentname);");
-            new {Departmentname = DeleteDepartmentName};
+            _connection.Execute("DELETE FROM DEPARTMENTS WHERE DepartmentID = (@ID);",
+            new {ID = ID});
         }
 
         public IEnumerable<Department> GetAllDepartments()
