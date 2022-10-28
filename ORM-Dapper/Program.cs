@@ -38,11 +38,15 @@ namespace ORM_Dapper
                 Print(repo.GetAllDepartments());
             }
 
-            foreach (var depo in depos)
-             {
-                Console.WriteLine($" ID: {depo.DepartmentID}  NAME : {depo.Name}");
-             }
+            
 
+        }
+        private static void Print(IEnumerable<Department> depos)
+        {
+            foreach (var depo in depos)
+            {
+                Console.WriteLine($" ID: {depo.DepartmentID}  NAME : {depo.Name}");
+            }
         }
     }
 }

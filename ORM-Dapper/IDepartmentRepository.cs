@@ -10,5 +10,6 @@ namespace ORM_Dapper
     {
         IEnumerable<Department> GetAllDepartments();
         void InstertDepartment(string newDepartmentName);
+        
     }
 }
