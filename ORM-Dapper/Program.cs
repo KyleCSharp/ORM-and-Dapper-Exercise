@@ -24,8 +24,21 @@ namespace ORM_Dapper
             Console.WriteLine("please press enter. . . . . . .");
             Console.ReadLine();
             var depos = repo.GetAllDepartments();
+            Print(repo.GetAllDepartments());
 
-             foreach (var depo in depos)
+
+
+            Console.WriteLine("Would you like to add a department?");
+            var userReponse = Console.ReadLine();
+            if (userReponse.ToLower() == "yes")
+            {
+                Console.WriteLine("What is the name of you new department");
+                userReponse = Console.ReadLine();
+                repo.InstertDepartment(userReponse);
+                Print(repo.GetAllDepartments());
+            }
+
+            foreach (var depo in depos)
              {
                 Console.WriteLine($" ID: {depo.DepartmentID}  NAME : {depo.Name}");
              }
