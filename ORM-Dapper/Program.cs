@@ -29,7 +29,7 @@ namespace ORM_Dapper
              {
                 Console.WriteLine($" ID: {depo.DepartmentID}  NAME : {depo.Name}");
              }
-             // test
+             // test123
         }
     }
 }
