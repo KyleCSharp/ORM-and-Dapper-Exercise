@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing.Printing;
 
+
+
 namespace ORM_Dapper
 {
     public class Program
@@ -19,32 +21,72 @@ namespace ORM_Dapper
 
             string connString = config.GetConnectionString("DefaultConnection");
             #endregion 
-
+            IDbConnection connection = new MySqlConnection(connString);
+            var repox = new DapperProductRepository(connection);
             IDbConnection conn = new MySqlConnection(connString);
             DapperDepartmentRepository repo = new DapperDepartmentRepository(conn);
-            Console.WriteLine("Hello user, here are the current departments");
-            Console.WriteLine("please press enter. . . . . . .");
+            TypeLine("Hello user, here are the current department");
+            Console.WriteLine();
+            TypeLine("please press enter. . . . . . .");
             Console.ReadLine();
             var depos = repo.GetAllDepartments();
             Print(repo.GetAllDepartments());
-            Thread.Sleep(5000);
 
-             
-
-            Console.WriteLine("Would you like to add a department?");
+            TypeLine("Would you like to add a department? TYPE yes or jump to products type products");
+            Console.WriteLine();
             var userReponse = Console.ReadLine();
             if (userReponse.ToLower()=="yes")
             {
-                Console.WriteLine("What is the name of you new department");
+                TypeLine("What is the name of your new department");
+                Console.WriteLine();
                 userReponse = Console.ReadLine();
                 repo.InstertDepartment(userReponse);
                 Print(repo.GetAllDepartments());
             }
-            Console.WriteLine("would you like to delete a department *USE WITH CAUTION* PRESS ENTER ");
+            
+            if (userReponse.ToLower() == "no")
+            {
+
+                TypeLine("LOGGING OUT");
+
+                Environment.Exit(5000);
+
+
+
+            }
+            if(userReponse.ToLower() == "products")
+            {
+                PrintTwo(repox.GetAllProducts());
+                Console.WriteLine("would you like to add a product?");
+                var responseO = Console.ReadLine();
+                if (responseO.ToLower() == "yes")
+                {
+                    Console.WriteLine("please add your product");
+
+                    repox.CreateProduct(Console.ReadLine(), double.Parse(Console.ReadLine()), int.Parse(Console.ReadLine()));
+                    PrintTwo(repox.GetAllProducts());
+                }
+                if (responseO.ToLower() == "no")
+                {
+                    TypeLine("LOGGING OUT");
+
+                    Environment.Exit(5000);
+                }
+            }
+            TypeLine("would you like to delete a department *USE WITH CAUTION* PRESS ENTER ");
+            Console.WriteLine();
             Console.ReadLine();
-            Console.WriteLine("ARE YOU SURE PLEASE TYPE YES TO CONTINUE *USE WITH CAUTION");
             
 
+            
+            var myString= "ARE YOU SURE PLEASE TYPE YES TO CONTINUE *USE WITH CAUTION";
+            foreach (var character in myString)
+            {
+                Console.Write(character);
+                Thread.Sleep(40);
+            }
+            Console.WriteLine();
+            
             var userRepose_X = Console.ReadLine();
             if (userRepose_X.ToLower() == "yes")
             {
@@ -56,32 +98,35 @@ namespace ORM_Dapper
             }
             else Console.WriteLine("Have a good day");
 
-            Console.WriteLine("would you like to look at products?");
+            TypeLine("would you like to look at products?");
+            Console.WriteLine();
 
-            IDbConnection connection = new MySqlConnection(connString);
-            var repox = new DapperProductRepository(connection);
+            
             var userRespose_Y = Console.ReadLine();
-            if (userRespose_Y == "yes")
+            if (userRespose_Y.ToLower() == "yes")
             {
                 PrintTwo(repox.GetAllProducts());
             }
-            if(userRespose_Y == "no")
+            if(userRespose_Y.ToLower()== "no")
             {
-                Console.WriteLine("logging out");
+                TypeLine("LOGGING OUT");
+                Environment.Exit(5000);
+
             }
-            else Console.WriteLine("would you like to add a product?");
+            Console.WriteLine("would you like to add a product?");
             var response =Console.ReadLine();
-            if (response == "yes")
+            if (response.ToLower() == "yes")
             {
                 Console.WriteLine("please add your product");
                 
                 repox.CreateProduct(Console.ReadLine(),double.Parse(Console.ReadLine()),int.Parse(Console.ReadLine()));
                 PrintTwo(repox.GetAllProducts());
             }
-            
-            
-        }
 
+            TypeLine("LOGGING OUT");
+
+
+        }
         private static void Print(IEnumerable<Department> depos)
         {
             foreach (var depo in depos)
@@ -96,7 +141,15 @@ namespace ORM_Dapper
              Console.WriteLine($" Product Name: {product.Name}          Product ID: {product.ProductID}        Category ID:  {product.CategoryID}        Product Price: {product.Price}       On sale 1 means yes: {product.OnSale}        Stock Level: {product.StockLevel}");
             }
         }
-       
+        static void TypeLine(string line)
+        {
+            for (int i = 0; i < line.Length; i++)
+            {
+                Console.Write(line[i]);
+                System.Threading.Thread.Sleep(20); // Sleep for 150 milliseconds
+            }
+        }
+
         //prolly would be better if i did a switch will reform at a later date TBD
     }
 }
