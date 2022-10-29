@@ -27,6 +27,7 @@ namespace ORM_Dapper
             Console.ReadLine();
             var depos = repo.GetAllDepartments();
             Print(repo.GetAllDepartments());
+            Thread.Sleep(5000);
 
              
 
@@ -54,14 +55,45 @@ namespace ORM_Dapper
 
             }
             else Console.WriteLine("Have a good day");
-            Console.WriteLine("Have a great day ");
+
+            Console.WriteLine("would you like to look at products?");
+
+            IDbConnection connection = new MySqlConnection(connString);
+            var repox = new DapperProductRepository(connection);
+            var userRespose_Y = Console.ReadLine();
+            if (userRespose_Y == "yes")
+            {
+                PrintTwo(repox.GetAllProducts());
+            }
+            if(userRespose_Y == "no")
+            {
+                Console.WriteLine("logging out");
+            }
+            else Console.WriteLine("would you like to add a product?");
+            var response =Console.ReadLine();
+            if (response == "yes")
+            {
+                Console.WriteLine("please add your product");
+                
+                repox.CreateProduct(Console.ReadLine(),double.Parse(Console.ReadLine()),int.Parse(Console.ReadLine()));
+                PrintTwo(repox.GetAllProducts());
+            }
+            
             
         }
+
         private static void Print(IEnumerable<Department> depos)
         {
             foreach (var depo in depos)
             {
                 Console.WriteLine($" ID: {depo.DepartmentID}  NAME : {depo.Name}");
+            }
+        }
+        private static void PrintTwo(IEnumerable<ProductClass> deposx)
+        {
+            foreach (var product in deposx)
+            {
+             Console.WriteLine($" Product Name: {product.Name}          Product ID: {product.ProductID}        Category ID:  {product.CategoryID}        Product Price: {product.Price}       On sale 1 means yes: {product.OnSale}        Stock Level: {product.StockLevel}");
             }
         }
        
